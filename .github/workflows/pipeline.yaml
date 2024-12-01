@@ -202,7 +202,18 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
-      - run: |
+  
+      - name: Assume the testing pipeline user role
+        uses: aws-actions/configure-aws-credentials@v1-node16
+        with:
+          aws-region: ${{ env.TESTING_REGION }}
+          role-to-assume: ${{ env.TESTING_PIPELINE_EXECUTION_ROLE }}
+          role-session-name: testing-deployment
+          role-duration-seconds: 3600
+          role-skip-session-tagging: true
+  
+      - name: Run integration tests
+        run: |
           # trigger the integration tests here
           echo 'Running integration tests'
           # Install all dependencies (including dependencies for running tests)
@@ -210,7 +221,7 @@ jobs:
           pip3 install -r ./tests/requirements.txt 
           # Discover and run unit tests in the 'tests/unit' directory
           python3 -m pytest tests/integration -v      
-
+  
   deploy-prod:
     if: github.ref == 'refs/heads/main'
     needs: [integration-test]
