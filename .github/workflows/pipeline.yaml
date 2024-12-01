@@ -211,7 +211,7 @@ jobs:
           role-session-name: testing-deployment
           role-duration-seconds: 3600
           role-skip-session-tagging: true      
-      - run: |
+        run: |
           # trigger the integration tests here
           echo 'Running integration tests'
           export AWS_DEFAULT_REGION=us-west-2
