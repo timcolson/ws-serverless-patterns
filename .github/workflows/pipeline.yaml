@@ -214,15 +214,16 @@ jobs:
           role-skip-session-tagging: true
   
       - name: Run integration tests
-        run: |
+      - run: |
           # trigger the integration tests here
           echo 'Running integration tests'
           export AWS_DEFAULT_REGION=us-west-2
+          export ENV_STACK_NAME=ws-serverless-patterns-dev
           # Install all dependencies (including dependencies for running tests)
           pip3 install -r requirements.txt 
           pip3 install -r ./tests/requirements.txt 
           # Discover and run unit tests in the 'tests/unit' directory
-          python3 -m pytest tests/integration -v      
+          python3 -m pytest tests/integration -v    
   
   deploy-prod:
     if: github.ref == 'refs/heads/main'
